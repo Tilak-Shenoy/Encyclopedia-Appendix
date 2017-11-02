@@ -1,5 +1,6 @@
 import string
 #Main class
+flag=''
 class Index(object):
 	#Constructor
 	def __init__(self):
@@ -32,9 +33,8 @@ class Index(object):
 					self.inverted_index[token][lineno] = 0
 				self.inverted_index[token][lineno] += 1
 			else:
-				t = rempunc(token)
-				tokens.append(t)
-				self.insert_tokens(lineno,t)
+				tokens.append(flag)
+				self.insert_tokens(lineno,flag)
 	#O(1) search
 	def search(self,token):
 		if token in self.inverted_index:
@@ -50,17 +50,17 @@ def display(x):
 		print("Word not Found")
 def isnormWord(a):
 	invalidChars = set(string.punctuation.replace("_", ""))
-	if a[len(a) - 1] in invalidChars or a[0] in invalidChars:
+	if a[len(a) - 1] in invalidChars:
+		global flag
+		flag=a[0:len(a)-1]
 		return 0
 	elif a in bad:
 		return 2
+	elif a[0] in invalidChars:
+		flag=a[1:]
+		return -1
 	else:	
 		return 1
-def rempunc(x):
-	x = list(x)
-	x.pop()
-	y = ''.join(x)
-	return y
 bad = frozenset([
 'a', 'about', 'across', 'after', 'afterwards', 'again', 
 'against', 'all', 'almost', 'alone', 'along', 'already', 'also','although',
@@ -105,3 +105,4 @@ i.construct("a.txt")
 print("Enter word to be searched!")
 word = input()
 display(i.search(word))
+flag = None
