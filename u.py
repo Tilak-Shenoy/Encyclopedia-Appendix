@@ -1,66 +1,3 @@
-import string
-#Main class
-class Index(object):
-	#Constructor
-	def __init__(self):
-		self.inverted_index = {}
-	#Formatting the data 
-	def construct(self,file):
-		l = 0
-		with open(file) as f:
-			content = f.readlines()
-		content = [x.strip() for x in content] 
-		for i in content:
-			l += 1
-			self.insert(l,i)
-		print("Successfully Inserted!!!!")
-	#inserting the data
-	def insert(self,lineno,sentence):
-		tokenise = lambda s : s.split()
-		self.insert_tokens(lineno,tokenise(sentence))
-	#inserting each word
-	def insert_tokens(self,lineno,tokens):
-		for token in tokens:
-			z = isnormWord(token)
-			if z == 2:
-				continue
-			elif z == 1:		
-				if not token in self.inverted_index:
-					self.inverted_index[token] = {}
-					self.inverted_index[token][lineno] = 0
-				if not lineno in self.inverted_index[token]:
-					self.inverted_index[token][lineno] = 0
-				self.inverted_index[token][lineno] += 1
-			else:
-				t = rempunc(token)
-				tokens.append(t)
-				self.insert_tokens(lineno,t)
-	#O(1) search
-	def search(self,token):
-		if token in self.inverted_index:
-			print("LineNumber | Frequency:")
-			return self.inverted_index[token]
-		else:	
-			return None
-def display(x):
-	try:
-		for i in x:
-			print(i,"   |   ",x[i])
-	except Exception as e:
-		print("Word not Found")
-def isnormWord(a):
-	invalidChars = set(string.punctuation.replace("_", ""))
-	if a[len(a) - 1] in invalidChars or a[0] in invalidChars:
-		return 0
-	elif a in bad:
-		return 2
-	else:	
-		return 1
-def rempunc(x):
-	x = list(x)
-	x.pop()
-	y = ''.join(x)
-	return y
 bad = frozenset([
 'a', 'about', 'across', 'after', 'afterwards', 'again', 
 'against', 'all', 'almost', 'alone', 'along', 'already', 'also','although',
@@ -100,8 +37,3 @@ bad = frozenset([
 'while', 'whither', 'who', 'whoever', 'whole', 'whom', 'whose', 'why', 'will', 
 'with', 'within', 'without', 'would', 'yet', 'you', 'your', 'yours', 'yourself',
 'yourselves', 'the'])
-i=Index() 
-i.construct("a.txt")
-print("Enter word to be searched!")
-word = input()
-display(i.search(word))
