@@ -1,15 +1,6 @@
-flag=''
 import string
 import PyPDF2
-class Node:
-	def __init__(self):
-		self.line = None
-		self.freq = None
-		self.next = Node()
-class Dic:
-	def __init__(self):
-		self.arr = [None]		
-
+import time
 #Main class
 class Index(object):
 	#Constructor
@@ -17,40 +8,32 @@ class Index(object):
 		self.inverted_index = {}
 	#Formatting the data 
 	def construct(self,file):
-# creating a pdf file object
-		pdfFileObj = open('c.pdf', 'rb')
+		# creating a pdf file object
+		pdfFileObj = open(file, 'rb')
  
-# creating a pdf reader object
+		# creating a pdf reader object
 		pdfReader = PyPDF2.PdfFileReader(pdfFileObj)
  
-# creating a page object
+		# creating a page object
 		for i in range(pdfReader.numPages):
 
 			pageObj = pdfReader.getPage(i)
  
-# extracting text from page
+		# extracting text from page
 			x = pageObj.extractText()
-#print(pageObj.extractText())
 			x = x.split()
 			print(x)
 			self.insert_tokens(i,x)
-# closing the pdf file object
+		# closing the pdf file object
 		pdfFileObj.close()
 
 		print("Successfully Inserted!!!!")
-	#inserting the data
-	def insert(self,lineno,sentence):
-		tokenise = lambda s : s.split()
-		self.insert_tokens(lineno,tokenise(sentence))
 	#inserting each word
 	def insert_tokens(self,lineno,tokens):
 		for token in tokens:
 			token = token.lower()
 			print(token)
-			z = 1
-			if z == 2:
-				continue
-			elif z == 1:		
+			if not token in bad: 
 				if not token in self.inverted_index:
 					self.inverted_index[token] = {}
 					self.inverted_index[token][lineno] = 0
@@ -58,8 +41,7 @@ class Index(object):
 					self.inverted_index[token][lineno] = 0
 				self.inverted_index[token][lineno] += 1
 			else:
-				tokens.append(flag)
-				self.insert_tokens(lineno,flag)
+				continue
 	#O(1) search
 	def search(self,token):
 		if token in self.inverted_index:
@@ -73,19 +55,6 @@ def display(x):
 			print(i + 1,"         |   ",x[i])
 	except Exception as e:
 		print("Word not Found")
-def  (a):
-	invalidChars = set(string.punctuation.replace("_", ""))
-	if a[len(a) - 1] in invalidChars:
-		global flag
-		flag=a[0:len(a)-1]
-		return 0
-	elif a in bad:
-		return 2
-	elif a[0] in invalidChars:
-		flag=a[1:]
-		return -1
-	else:	
-		return 1
 bad = frozenset([
 'a','righanglejaipur@gmail.com,', 'about', 'across', 'after', 'afterwards', 'again', 
 'against', 'all', 'almost', 'alone', 'along', 'already', 'also','although',
@@ -125,9 +94,13 @@ bad = frozenset([
 'while', 'whither', 'who', 'whoever', 'whole', 'whom', 'whose', 'why', 'will', 
 'with', 'within', 'without', 'would', 'yet', 'you', 'your', 'yours', 'yourself',
 'yourselves', 'the'])
+
+v=time.clock()
 i=Index() 
-i.construct("a.txt")
+i.construct("c.pdf")
+print(time.clock()-v)
 print("Enter word to be searched!")
 word = input()
+v=time.clock()
 display(i.search(word))
-flag = None
+print(time.clock()-v)
