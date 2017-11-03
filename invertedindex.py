@@ -1,19 +1,42 @@
-import string
-#Main class
 flag=''
+import string
+import PyPDF2
+class Node:
+	def __init__(self):
+		self.line = None
+		self.freq = None
+		self.next = Node()
+class Dic:
+	def __init__(self):
+		self.arr = [None]		
+
+#Main class
 class Index(object):
 	#Constructor
 	def __init__(self):
 		self.inverted_index = {}
 	#Formatting the data 
 	def construct(self,file):
-		l = 0
-		with open(file) as f:
-			content = f.readlines()
-		content = [x.strip() for x in content] 
-		for i in content:
-			l += 1
-			self.insert(l,i)
+# creating a pdf file object
+		pdfFileObj = open('c.pdf', 'rb')
+ 
+# creating a pdf reader object
+		pdfReader = PyPDF2.PdfFileReader(pdfFileObj)
+ 
+# creating a page object
+		for i in range(pdfReader.numPages):
+
+			pageObj = pdfReader.getPage(i)
+ 
+# extracting text from page
+			x = pageObj.extractText()
+#print(pageObj.extractText())
+			x = x.split()
+			print(x)
+			self.insert_tokens(i,x)
+# closing the pdf file object
+		pdfFileObj.close()
+
 		print("Successfully Inserted!!!!")
 	#inserting the data
 	def insert(self,lineno,sentence):
@@ -22,7 +45,9 @@ class Index(object):
 	#inserting each word
 	def insert_tokens(self,lineno,tokens):
 		for token in tokens:
-			z = isnormWord(token)
+			token = token.lower()
+			print(token)
+			z = 1
 			if z == 2:
 				continue
 			elif z == 1:		
@@ -38,14 +63,14 @@ class Index(object):
 	#O(1) search
 	def search(self,token):
 		if token in self.inverted_index:
-			print("LineNumber | Frequency:")
+			print("PageNumber | Frequency:")
 			return self.inverted_index[token]
 		else:	
 			return None
 def display(x):
 	try:
 		for i in x:
-			print(i,"   |   ",x[i])
+			print(i + 1,"         |   ",x[i])
 	except Exception as e:
 		print("Word not Found")
 def isnormWord(a):
@@ -62,7 +87,7 @@ def isnormWord(a):
 	else:	
 		return 1
 bad = frozenset([
-'a', 'about', 'across', 'after', 'afterwards', 'again', 
+'a','righanglejaipur@gmail.com,', 'about', 'across', 'after', 'afterwards', 'again', 
 'against', 'all', 'almost', 'alone', 'along', 'already', 'also','although',
 'always','am','among', 'amongst', 'amoungst', 'amount',  'an', 'and', 'another',
 'any','anyhow','anyone','anything','anyway', 'anywhere', 'are', 'around', 'as',
