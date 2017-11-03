@@ -73,7 +73,7 @@ def display(x):
 			print(i + 1,"         |   ",x[i])
 	except Exception as e:
 		print("Word not Found")
-def isnormWord(a):
+def  (a):
 	invalidChars = set(string.punctuation.replace("_", ""))
 	if a[len(a) - 1] in invalidChars:
 		global flag
