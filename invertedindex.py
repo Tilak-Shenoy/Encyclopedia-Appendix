@@ -23,23 +23,22 @@ class Index(object):
 			x = pageObj.extractText()
 			x = x.split()
 			print(x)
-			self.insert_tokens(i,x)
+			self.insert_tokens(i + 1,x)
 		# closing the pdf file object
 		pdfFileObj.close()
 
 		print("Successfully Inserted!!!!")
 	#inserting each word
-	def insert_tokens(self,lineno,tokens):
+	def insert_tokens(self,pageno,tokens):
 		for token in tokens:
 			token = token.lower()
-			print(token)
 			if not token in bad: 
 				if not token in self.inverted_index:
 					self.inverted_index[token] = {}
-					self.inverted_index[token][lineno] = 0
-				if not lineno in self.inverted_index[token]:
-					self.inverted_index[token][lineno] = 0
-				self.inverted_index[token][lineno] += 1
+					self.inverted_index[token][pageno] = 0
+				if not pageno in self.inverted_index[token]:
+					self.inverted_index[token][pageno] = 0
+				self.inverted_index[token][pageno] += 1
 			else:
 				continue
 	#O(1) search
@@ -52,7 +51,7 @@ class Index(object):
 def display(x):
 	try:
 		for i in x:
-			print(i + 1,"         |   ",x[i])
+			print(i,"         |   ",x[i])
 	except Exception as e:
 		print("Word not Found")
 bad = frozenset([
@@ -100,7 +99,7 @@ i=Index()
 i.construct("c.pdf")
 print(time.clock()-v)
 print("Enter word to be searched!")
-word = input()
+word = input().lower()
 v=time.clock()
 display(i.search(word))
 print(time.clock()-v)
