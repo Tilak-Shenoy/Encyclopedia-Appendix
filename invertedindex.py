@@ -22,7 +22,7 @@ class Index(object):
 		# extracting text from page
 			x = pageObj.extractText()
 			x = x.split()
-			print(x)
+			
 			self.insert_tokens(i + 1,x)
 		# closing the pdf file object
 		pdfFileObj.close()
@@ -55,7 +55,7 @@ def display(x):
 	except Exception as e:
 		print("Word not Found")
 bad = frozenset([
-'a','righanglejaipur@gmail.com,', 'about', 'across', 'after', 'afterwards', 'again', 
+'a', 'about', 'across', 'after', 'afterwards', 'again', 
 'against', 'all', 'almost', 'alone', 'along', 'already', 'also','although',
 'always','am','among', 'amongst', 'amoungst', 'amount',  'an', 'and', 'another',
 'any','anyhow','anyone','anything','anyway', 'anywhere', 'are', 'around', 'as',
@@ -96,7 +96,7 @@ bad = frozenset([
 
 v=time.clock()
 i=Index() 
-i.construct("c.pdf")
+i.construct("t.pdf")
 print(time.clock()-v)
 print("Enter word to be searched!")
 word = input().lower()
