@@ -23,6 +23,7 @@ class Index(object):
 			x = pageObj.extractText()
 			x = x.split()
 			
+			
 			self.insert_tokens(i + 1,x)
 		# closing the pdf file object
 		pdfFileObj.close()
@@ -54,6 +55,7 @@ def display(x):
 			print(i,"         |   ",x[i])
 	except Exception as e:
 		print("Word not Found")
+
 bad = frozenset([
 'a', 'about', 'across', 'after', 'afterwards', 'again', 
 'against', 'all', 'almost', 'alone', 'along', 'already', 'also','although',
